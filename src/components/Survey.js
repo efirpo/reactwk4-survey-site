@@ -1,12 +1,12 @@
 import React from 'react';
 
 function Survey(props) {
+
   return (
     <React.Fragment>
-      <div>
-        {props.name}<br />
-        {props.title}<br />
-        {props.author}<br />
+      <div onClick={() => props.onShowDetailsClick(props.id)}>
+        <h4>{props.name}</h4>
+        <p><em>{props.title}</em>, {props.author}</p>
       </div>
     </React.Fragment>
   )
