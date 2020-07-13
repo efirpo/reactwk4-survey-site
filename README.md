@@ -1,5 +1,49 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# _Book Review Surveys_
+#### _Epicodus Project July 13, 2020_
+
+#### By _**Julia Seidman & Ethan Firpo**_
+
+## Description
+
+_A project to introduce Firebase in integration with React/Redux.  Using noSQL database to house surveys and survey responses.  Surveys will be 10-question surveys on a 5-point agree/disagree scale to generate 'reviews' for books._
+
+## Setup/Installation Requirements
+
+1. Clone this repository from GitHub.
+
+
+
+## Known Bugs
+
+There are no known bugs at the time of this update.
+
+## Support and contact details
+
+_Have a bug or an issue with this application? [Open a new issue] here on GitHub._
+
+## Technologies Used
+
+* Git and GitHub
+* Javascript
+* React/Redux
+* Firestore/Firebase
+
+### User Story
+
+* As a user, I want to be able to create surveys.
+* As a user, I want to be able to view surveys created by other users.
+* As a user, I want to be able to respond to surveys.
+* As a user, I want to be able to see aggregated results of other surveys.
+
+
+### License
+This software is licensed under the MIT license.
+
+Copyright (c) 2020 **_Julia Seidman & Ethan Firpo_**
+
+
 ## Available Scripts
 
 In the project directory, you can run:
