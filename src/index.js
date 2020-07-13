@@ -4,7 +4,8 @@ import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import firebase from "./firebase";
 import App from './App';
 import { Provider } from 'react-redux';
-import { createFirestoreInstance } from 'react-redux-firebase'
+import { createFirestoreInstance } from 'redux-firestore';
+import { createStore } from 'redux';
 import rootReducer from './reducers/index';
 import * as serviceWorker from './serviceWorker';
 
@@ -13,7 +14,7 @@ const store = createStore(rootReducer);
 const rrfProps = {
   firebase,
   config: {
-    userProfile: 'users'
+    surveys: 'surveys'
   },
   dispatch: store.dispatch,
   createFirestoreInstance
