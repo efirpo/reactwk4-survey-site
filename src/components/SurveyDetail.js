@@ -10,7 +10,10 @@ function SurveyDetail(props) {
   let [q4response, q4Change] = useState(0);
   let [q5response, q5Change] = useState(0);
 
-  function handleSurveySubmission() {
+  function handleSurveySubmission(event) {
+    event.preventDefault();
+    let numberOfResponses = firestore.collection('surveys').doc(props.survey.id).collection('responses').get().then(snap => { return snap.size })
+    console.log(numberOfResponses)
     firestore.collection('surveys').doc(props.survey.id).collection('responses').add({
       q1response: q1response,
       q2response: q2response,
@@ -18,8 +21,13 @@ function SurveyDetail(props) {
       q4response: q4response,
       q5response: q5response
     })
-    // firestore.collection('surveys').add({
-    //   q1average: 
+    // firestore.collection('surveys').doc(props.survey.id).update({
+    //   q1average: { totalresponsesHere } + 1 / q1average * totalresponsesHere + q1response,
+    //   q2average: ,
+    //   q3average: ,
+    //   q4average: ,
+    //   q5average: ,
+    //   surveyTakersNum: surveyTakersNum + 1
     // })
   }
   function handleResponseChange(event) {
