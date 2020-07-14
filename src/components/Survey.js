@@ -6,7 +6,7 @@ function Survey(props) {
     <React.Fragment>
       <div onClick={() => props.onShowDetailsClick(props.id)}>
         <h4>{props.name}</h4>
-        <p><em>{props.title}</em>, {props.author}</p>
+        <p><em>{props.bookTitle}</em>, {props.bookAuthor}</p>
       </div>
     </React.Fragment>
   )

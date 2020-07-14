@@ -4,3 +4,7 @@ export const selectSurvey = (survey) => ({
   type: a.SELECT_SURVEY,
   survey
 })
+
+export const toggleForm = () => ({
+  type: a.TOGGLE_FORM
+})

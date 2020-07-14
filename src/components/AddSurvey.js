@@ -17,7 +17,7 @@ function AddSurvey() {
       question2: event.target.question2.value,
       question3: event.target.question3.value,
       question4: event.target.question4.value,
-      question5: event.target.question5.value
+      question5: event.target.question5.value,
     })
   }
   return (
