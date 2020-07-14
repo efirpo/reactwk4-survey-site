@@ -26,7 +26,7 @@ class Control extends React.Component {
     let stateSurvey;
     firestoreSurvey.get().then(function (doc) {
       stateSurvey = { ...doc.data(), id: id }
-      console.table(doc.data())
+      // console.table(doc.data())
       const action = a.selectSurvey(stateSurvey)
       dispatch(action)
     })

@@ -10,10 +10,15 @@ function SurveyDetail(props) {
   let [q4response, q4Change] = useState(0);
   let [q5response, q5Change] = useState(0);
 
-  function handleSurveySubmission(event) {
+  let numberOfResponses;
+
+  async function handleSurveySubmission(event) {
     event.preventDefault();
-    let numberOfResponses = firestore.collection('surveys').doc(props.survey.id).collection('responses').get().then(snap => { return snap.size })
-    console.log(numberOfResponses)
+    numberOfResponses = await firestore.collection('surveys').doc(props.survey.id).collection('responses').get().then(snap => { return snap.size })
+    console.log(numberOfResponses);
+    const mathCheck = numberOfResponses * 2
+    console.log(mathCheck)
+
     firestore.collection('surveys').doc(props.survey.id).collection('responses').add({
       q1response: q1response,
       q2response: q2response,
@@ -21,7 +26,26 @@ function SurveyDetail(props) {
       q4response: q4response,
       q5response: q5response
     })
-    // firestore.collection('surveys').doc(props.survey.id).update({
+
+    firestore.collection('surveys').doc(props.survey.id).update({
+      ...props.survey,
+      q1average: ((q1average * (numberOfResponses - 1)) + q1response) / numberOfResponses,
+      q2average: ((q2average * (numberOfResponses - 1)) + q2response) / numberOfResponses,
+      q3average: ((q3average * (numberOfResponses - 1)) + q3response) / numberOfResponses,
+      q4average: ((q4average * (numberOfResponses - 1)) + q4response) / numberOfResponses,
+      q5average: ((q5average * (numberOfResponses - 1)) + q5response) / numberOfResponses
+    })
+
+
+    //return firestore.runTransaction(transaction => {
+    //return transaction.get(surveyRef).then(sur => {
+    // let newNumSurveyTakers = sur.data().numSurveyTakers+1;
+    // let oldResponseTotalQ1 = sur.data().avgResQ1 * sur.data().numSurveyTakers;
+    // let newAvgQ1 = (oldResponseTotalQ1 + q1response)/newNumSurveyTakers;
+    // let oldResponseTotalQ2 = sur.data().avgResQ2 * sur.data().numSurveyTakers;
+    // let newAvgQ1 = (oldResponseTotalQ1 + q1response)/newNumSurveyTakers;
+
+    // 
     //   q1average: { totalresponsesHere } + 1 / q1average * totalresponsesHere + q1response,
     //   q2average: ,
     //   q3average: ,
@@ -52,6 +76,7 @@ function SurveyDetail(props) {
       <form onSubmit={handleSurveySubmission}>
         <label>{props.survey.question1}</label>
         <select name="question1" onChange={handleResponseChange}>
+          <option value="0"></option>
           <option value="1">Highly Agree</option>
           <option value="2">Agree</option>
           <option value="3">Neutral</option>
@@ -59,7 +84,8 @@ function SurveyDetail(props) {
           <option value="5">Highly Disagree</option>
         </select>
         <label>{props.survey.question2}</label>
-        <select name="question2" value="" onChange={handleResponseChange}>
+        <select name="question2" onChange={handleResponseChange}>
+          <option value="0"></option>
           <option value="1">Highly Agree</option>
           <option value="2">Agree</option>
           <option value="3">Neutral</option>
@@ -67,7 +93,8 @@ function SurveyDetail(props) {
           <option value="5">Highly Disagree</option>
         </select>
         <label>{props.survey.question3}</label>
-        <select name="question3" value="" onChange={handleResponseChange}>
+        <select name="question3" onChange={handleResponseChange}>
+          <option value="0"></option>
           <option value="1">Highly Agree</option>
           <option value="2">Agree</option>
           <option value="3">Neutral</option>
@@ -75,7 +102,8 @@ function SurveyDetail(props) {
           <option value="5">Highly Disagree</option>
         </select>
         <label>{props.survey.question4}</label>
-        <select name="question4" value="" onChange={handleResponseChange}>
+        <select name="question4" onChange={handleResponseChange}>
+          <option value="0"></option>
           <option value="1">Highly Agree</option>
           <option value="2">Agree</option>
           <option value="3">Neutral</option>
@@ -83,7 +111,8 @@ function SurveyDetail(props) {
           <option value="5">Highly Disagree</option>
         </select>
         <label>{props.survey.question5}</label>
-        <select name="question5" value="" onChange={handleResponseChange}>
+        <select name="question5" onChange={handleResponseChange}>
+          <option value="0"></option>
           <option value="1">Highly Agree</option>
           <option value="2">Agree</option>
           <option value="3">Neutral</option>
