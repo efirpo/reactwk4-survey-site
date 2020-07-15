@@ -18,11 +18,11 @@ function AddSurvey() {
       question3: event.target.question3.value,
       question4: event.target.question4.value,
       question5: event.target.question5.value,
-      q1average: null,
-      q2average: null,
-      q3average: null,
-      q4average: null,
-      q5average: null
+      q1average: 0,
+      q2average: 0,
+      q3average: 0,
+      q4average: 0,
+      q5average: 0
     })
   }
   return (

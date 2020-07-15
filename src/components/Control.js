@@ -16,7 +16,7 @@ class Control extends React.Component {
 
   handleBackToListClick = () => {
     const { dispatch } = this.props;
-    const action = a.selectSurvey({})
+    const action = a.selectSurvey(false)
     dispatch(action)
   }
 
@@ -29,6 +29,7 @@ class Control extends React.Component {
       // console.table(doc.data())
       const action = a.selectSurvey(stateSurvey)
       dispatch(action)
+      console.table(stateSurvey)
     })
     // get({
     //   collection: 'surveys', doc: id
@@ -53,14 +54,17 @@ class Control extends React.Component {
 
     if (this.props.selectedSurvey) {
       detailsPage = <SurveyDetail survey={this.props.selectedSurvey} onBackToListClick={this.handleBackToListClick} />
+    } else if (!this.props.selectedSurvey) {
+      detailsPage = "";
     }
+
 
     return (
       <React.Fragment>
         <SurveyList onShowDetailsClick={this.handleShowingDetailClick} />
         <AddSurvey />
         {detailsPage}
-      </React.Fragment>
+      </React.Fragment >
     )
   }
 }

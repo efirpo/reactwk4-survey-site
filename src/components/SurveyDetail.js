@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
+import * as a from './../actions/index'
 
 function SurveyDetail(props) {
 
@@ -10,52 +11,44 @@ function SurveyDetail(props) {
   let [q4response, q4Change] = useState(0);
   let [q5response, q5Change] = useState(0);
 
-  let numberOfResponses;
+
 
   async function handleSurveySubmission(event) {
     event.preventDefault();
-    numberOfResponses = await firestore.collection('surveys').doc(props.survey.id).collection('responses').get().then(snap => { return snap.size })
-    console.log(numberOfResponses);
-    const mathCheck = numberOfResponses * 2
-    console.log(mathCheck)
-
-    firestore.collection('surveys').doc(props.survey.id).collection('responses').add({
-      q1response: q1response,
-      q2response: q2response,
-      q3response: q3response,
-      q4response: q4response,
-      q5response: q5response
-    })
-
-    firestore.collection('surveys').doc(props.survey.id).update({
-      ...props.survey,
-      q1average: ((q1average * (numberOfResponses - 1)) + q1response) / numberOfResponses,
-      q2average: ((q2average * (numberOfResponses - 1)) + q2response) / numberOfResponses,
-      q3average: ((q3average * (numberOfResponses - 1)) + q3response) / numberOfResponses,
-      q4average: ((q4average * (numberOfResponses - 1)) + q4response) / numberOfResponses,
-      q5average: ((q5average * (numberOfResponses - 1)) + q5response) / numberOfResponses
-    })
-
-
-    //return firestore.runTransaction(transaction => {
-    //return transaction.get(surveyRef).then(sur => {
-    // let newNumSurveyTakers = sur.data().numSurveyTakers+1;
-    // let oldResponseTotalQ1 = sur.data().avgResQ1 * sur.data().numSurveyTakers;
-    // let newAvgQ1 = (oldResponseTotalQ1 + q1response)/newNumSurveyTakers;
-    // let oldResponseTotalQ2 = sur.data().avgResQ2 * sur.data().numSurveyTakers;
-    // let newAvgQ1 = (oldResponseTotalQ1 + q1response)/newNumSurveyTakers;
-
-    // 
-    //   q1average: { totalresponsesHere } + 1 / q1average * totalresponsesHere + q1response,
-    //   q2average: ,
-    //   q3average: ,
-    //   q4average: ,
-    //   q5average: ,
-    //   surveyTakersNum: surveyTakersNum + 1
-    // })
+    let numberOfResponses;
+    numberOfResponses = await firestore.collection('surveys').doc(props.survey.id).collection('responses').get()
+      .then(snap => { return snap.size })
+      .then(firestore.collection('surveys').doc(props.survey.id).collection('responses').add({
+        q1response: parseInt(q1response),
+        q2response: parseInt(q2response),
+        q3response: parseInt(q3response),
+        q4response: parseInt(q4response),
+        q5response: parseInt(q5response)
+      }))
+    handleAveragesMath(numberOfResponses)
   }
-  function handleResponseChange(event) {
 
+  function handleAveragesMath(numberOfResponses) {
+    console.log("number of Responses: " + numberOfResponses)
+    console.log("props.survey.q1average: " + props.survey.q1average)
+    console.log("q1response: " + q1response)
+    firestore.collection('surveys').doc(props.survey.id).set({
+      ...props.survey,
+      q1average: ((props.survey.q1average * (numberOfResponses - 1)) + parseInt(q1response)) / numberOfResponses,
+      q2average: ((props.survey.q2average * (numberOfResponses - 1)) + parseInt(q2response)) / numberOfResponses,
+      q3average: ((props.survey.q3average * (numberOfResponses - 1)) + parseInt(q3response)) / numberOfResponses,
+      q4average: ((props.survey.q4average * (numberOfResponses - 1)) + parseInt(q4response)) / numberOfResponses,
+      q5average: ((props.survey.q5average * (numberOfResponses - 1)) + parseInt(q5response)) / numberOfResponses
+      //((0 /1)
+    })
+    console.log("THE MATH: " + ((1 * (2 - 1)) + 4) / 2)
+    console.log("Math without division: " + ((props.survey.q1average * (numberOfResponses - 1)) + q1response))
+    props.onBackToListClick()
+
+
+  }
+
+  function handleResponseChange(event) {
     if (event.target.name === "question1") {
       q1Change(q1response = event.target.value);
     } else if (event.target.name === "question2") {
