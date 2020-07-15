@@ -1,6 +1,11 @@
-import React from "react";
-import firebase from "firebase/app"
+import React, { useState } from "react";
+import firebase from "firebase/app";
+import Header from "./Header";
+import { Redirect } from "react-router-dom";
 function Signin() {
+
+  let [userFound, toggleUserFound] = useState(null);
+
   function doSignUp(event) {
     event.preventDefault();
     const email = event.target.email.value;
@@ -9,13 +14,14 @@ function Signin() {
       console.log(error.message)
     });
   }
+
   function doSignIn(event) {
     event.preventDefault();
     const email = event.target.signinEmail.value;
     const password = event.target.signinPassword.value;
     firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
       console.log("Successfully signed in!");
-    }).catch(function (error) {
+    }).then(function () { toggleUserFound(<Redirect to="/" />) }).catch(function (error) {
       console.log(error.message);
     });
   }
@@ -28,8 +34,12 @@ function Signin() {
     });
   }
 
+
+
   return (
     <React.Fragment>
+      <Header />
+      {userFound}
       <h1>Sign Up</h1>
       <form onSubmit={doSignUp}>
         <input type='text'

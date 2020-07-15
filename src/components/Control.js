@@ -4,6 +4,7 @@ import { withFirestore, isLoaded } from 'react-redux-firebase';
 import SurveyList from './SurveyList';
 import AddSurvey from './AddSurvey';
 import SurveyDetail from './SurveyDetail';
+import Header from './Header';
 import * as a from './../actions/index';
 
 class Control extends React.Component {
@@ -50,11 +51,14 @@ class Control extends React.Component {
       addSurveyForm = <AddSurvey />
     } else if (this.props.toggleForm && (isLoaded(auth)) && (auth.currentUser === null)) {
       addSurveyForm = <h2>You must be signed in to add surveys.</h2>
+    } else if (!this.props.toggleForm) {
+      addSurveyForm = "";
     }
 
 
     return (
       <React.Fragment>
+        <Header />
         <SurveyList onShowDetailsClick={this.handleShowingDetailClick} />
         {addSurveyForm}
         {detailsPage}

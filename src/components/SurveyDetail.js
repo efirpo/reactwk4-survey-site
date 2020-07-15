@@ -124,3 +124,19 @@ function SurveyDetail(props) {
 
 export default SurveyDetail;
 
+//Ideally, surveyDetail render should show survey questions if user has never taken specified survey
+//if they have already taken it, it should show averages of all responses
+//when 'user' is created, start with {surveysTaken: [], surveysCreated: []}
+//When user takes survey:
+//if(firestore.collection('users').doc(userId).collection('surveys').doc(surveyId)) {
+  // showAverages = firestore.collection(surveys).doc(surveyId.averageScores)
+//  }
+//  surveysTaken.value.push(props.survey.id)
+//})
+//render method checks surveysTaken.value.contains(props.survey.id)
+//When user creates survey:
+//('users').doc.update({
+//   surveysCreated.value.push
+// })
+
+// 

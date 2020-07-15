@@ -7,12 +7,14 @@ function App() {
   return (
     <React.Fragment>
       <Router>
-        <Header />
+
         <Switch>
           <Route path="/signin">
+
             <SignIn />
           </Route>
           <Route path="/">
+
             <Control />
           </Route>
         </Switch>
