@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withFirestore } from 'react-redux-firebase';
+import { withFirestore, isLoaded } from 'react-redux-firebase';
 import SurveyList from './SurveyList';
 import AddSurvey from './AddSurvey';
 import SurveyDetail from './SurveyDetail';
@@ -31,38 +31,32 @@ class Control extends React.Component {
       dispatch(action)
       console.table(stateSurvey)
     })
-    // get({
-    //   collection: 'surveys', doc: id
-    // }).then((survey) => {
-    //   const firestoreSurvey = {
-    //     name: survey.get('name'),
-    //     title: survey.get('bookTitle'),
-    //     author: survey.get('bookAuthor'),
-    //     question1: survey.get('question1'),
-    //     question2: survey.get('question2'),
-    //     question3: survey.get('question3'),
-    //     question4: survey.get('question4'),
-    //     question5: survey.get('question5'),
-    //     id: survey.get('id')
-    //   }
-
-    // })
   }
+
   render() {
-
+    const auth = this.props.firebase.auth();
     let detailsPage = null;
+    let addSurveyForm = null;
 
-    if (this.props.selectedSurvey) {
+    if (this.props.selectedSurvey && (isLoaded(auth)) && (auth.currentUser !== null)) {
       detailsPage = <SurveyDetail survey={this.props.selectedSurvey} onBackToListClick={this.handleBackToListClick} />
+    } else if (this.props.selectedSurvey && (isLoaded(auth)) & auth.currentUser === null) {
+      detailsPage = <h2>You must be signed in to take surveys.</h2>
     } else if (!this.props.selectedSurvey) {
       detailsPage = "";
+    }
+
+    if (this.props.toggleForm && (isLoaded(auth)) && (auth.currentUser !== null)) {
+      addSurveyForm = <AddSurvey />
+    } else if (this.props.toggleForm && (isLoaded(auth)) && (auth.currentUser === null)) {
+      addSurveyForm = <h2>You must be signed in to add surveys.</h2>
     }
 
 
     return (
       <React.Fragment>
         <SurveyList onShowDetailsClick={this.handleShowingDetailClick} />
-        <AddSurvey />
+        {addSurveyForm}
         {detailsPage}
       </React.Fragment >
     )
@@ -71,7 +65,8 @@ class Control extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    selectedSurvey: state.selectedSurvey
+    selectedSurvey: state.selectedSurvey,
+    toggleForm: state.toggleForm
   }
 }
 

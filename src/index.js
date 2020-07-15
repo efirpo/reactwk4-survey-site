@@ -8,6 +8,7 @@ import { createFirestoreInstance } from 'redux-firestore';
 import { createStore } from 'redux';
 import rootReducer from './reducers/index';
 import * as serviceWorker from './serviceWorker';
+import 'firebase/auth';
 
 const store = createStore(
   rootReducer,
@@ -17,6 +18,8 @@ const store = createStore(
 const rrfProps = {
   firebase,
   config: {
+    userProfile: 'users',
+    useFirestoreForProfile: true,
     surveys: 'surveys'
   },
   dispatch: store.dispatch,

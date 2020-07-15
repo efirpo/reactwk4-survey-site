@@ -19,30 +19,25 @@ function SurveyDetail(props) {
     numberOfResponses = await firestore.collection('surveys').doc(props.survey.id).collection('responses').get()
       .then(snap => { return snap.size })
       .then(firestore.collection('surveys').doc(props.survey.id).collection('responses').add({
-        q1response: parseInt(q1response),
-        q2response: parseInt(q2response),
-        q3response: parseInt(q3response),
-        q4response: parseInt(q4response),
-        q5response: parseInt(q5response)
+        q1response: q1response,
+        q2response: q2response,
+        q3response: q3response,
+        q4response: q4response,
+        q5response: q5response
       }))
     handleAveragesMath(numberOfResponses)
   }
 
   function handleAveragesMath(numberOfResponses) {
-    console.log("number of Responses: " + numberOfResponses)
-    console.log("props.survey.q1average: " + props.survey.q1average)
-    console.log("q1response: " + q1response)
     firestore.collection('surveys').doc(props.survey.id).set({
       ...props.survey,
-      q1average: ((props.survey.q1average * (numberOfResponses - 1)) + parseInt(q1response)) / numberOfResponses,
-      q2average: ((props.survey.q2average * (numberOfResponses - 1)) + parseInt(q2response)) / numberOfResponses,
-      q3average: ((props.survey.q3average * (numberOfResponses - 1)) + parseInt(q3response)) / numberOfResponses,
-      q4average: ((props.survey.q4average * (numberOfResponses - 1)) + parseInt(q4response)) / numberOfResponses,
-      q5average: ((props.survey.q5average * (numberOfResponses - 1)) + parseInt(q5response)) / numberOfResponses
+      q1average: ((props.survey.q1average * (numberOfResponses - 1)) + q1response) / numberOfResponses,
+      q2average: ((props.survey.q2average * (numberOfResponses - 1)) + q2response) / numberOfResponses,
+      q3average: ((props.survey.q3average * (numberOfResponses - 1)) + q3response) / numberOfResponses,
+      q4average: ((props.survey.q4average * (numberOfResponses - 1)) + q4response) / numberOfResponses,
+      q5average: ((props.survey.q5average * (numberOfResponses - 1)) + q5response) / numberOfResponses
       //((0 /1)
     })
-    console.log("THE MATH: " + ((1 * (2 - 1)) + 4) / 2)
-    console.log("Math without division: " + ((props.survey.q1average * (numberOfResponses - 1)) + q1response))
     props.onBackToListClick()
 
 
@@ -50,15 +45,15 @@ function SurveyDetail(props) {
 
   function handleResponseChange(event) {
     if (event.target.name === "question1") {
-      q1Change(q1response = event.target.value);
+      q1Change(q1response = parseInt(event.target.value));
     } else if (event.target.name === "question2") {
-      q2Change(q2response = event.target.value)
+      q2Change(q2response = parseInt(event.target.value))
     } else if (event.target.name === "question3") {
-      q3Change(q3response = event.target.value)
+      q3Change(q3response = parseInt(event.target.value))
     } else if (event.target.name === "question4") {
-      q4Change(q4response = event.target.value)
+      q4Change(q4response = parseInt(event.target.value))
     } else if (event.target.name === "question5") {
-      q5Change(q5response = event.target.value)
+      q5Change(q5response = parseInt(event.target.value))
     }
   }
 
