@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import firebase from "firebase/app";
 import Header from "./Header";
 import { Redirect } from "react-router-dom";
-function Signin() {
+import { connect } from 'react-redux';
+import * as a from './../actions/index';
+
+function Signin(props) {
 
   let [userFound, toggleUserFound] = useState(null);
 
@@ -21,7 +24,11 @@ function Signin() {
     const password = event.target.signinPassword.value;
     firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
       console.log("Successfully signed in!");
-    }).then(function () { toggleUserFound(<Redirect to="/" />) }).catch(function (error) {
+    }).then(function () { toggleUserFound(<Redirect to="/" />) }).then(function () {
+      const { dispatch } = props
+      const action = a.foundUser();
+      dispatch(action)
+    }).catch(function (error) {
       console.log(error.message);
     });
   }
@@ -33,7 +40,6 @@ function Signin() {
       console.log(error.message);
     });
   }
-
 
 
   return (
@@ -69,5 +75,6 @@ function Signin() {
     </React.Fragment >
   );
 }
+Signin = connect()(Signin)
 
 export default Signin

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
 import * as a from './../actions/index'
+import firebase from 'firebase/app';
 
 function SurveyDetail(props) {
 
@@ -11,8 +12,12 @@ function SurveyDetail(props) {
   let [q4response, q4Change] = useState(0);
   let [q5response, q5Change] = useState(0);
 
-
-
+  let user;
+  let auth;
+  if (props.foundUser) {
+    auth = props.firebase.auth()
+    user = auth.currentUser
+  }
   async function handleSurveySubmission(event) {
     event.preventDefault();
     let numberOfResponses;
@@ -24,7 +29,10 @@ function SurveyDetail(props) {
         q3response: q3response,
         q4response: q4response,
         q5response: q5response
+      })).then(firestore.collection('users').doc(user.uid).collection('surveys').add({
+        surveyID: props.survey.id
       }))
+
     handleAveragesMath(numberOfResponses)
   }
 
@@ -44,6 +52,7 @@ function SurveyDetail(props) {
   }
 
   function handleResponseChange(event) {
+    console.log(props)
     if (event.target.name === "question1") {
       q1Change(q1response = parseInt(event.target.value));
     } else if (event.target.name === "question2") {

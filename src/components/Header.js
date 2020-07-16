@@ -6,9 +6,12 @@ import firebase from 'firebase/app';
 import { withFirestore, isLoaded } from 'react-redux-firebase';
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props)
+  }
 
   handleShowFormClick = () => {
-
+    console.table(this.props)
     const { dispatch } = this.props;
     const action = a.toggleForm();
     dispatch(action)
@@ -16,24 +19,26 @@ class Header extends React.Component {
 
   doSignOut = () => {
     firebase.auth().signOut().then(function () {
-      console.log("Successfully signed out!")
+      console.log("Sign out successful!")
     }).catch(function (error) {
       console.log(error.message);
     });
-    // if (this.props.toggleForm) {
-    //   const { dispatch } = this.props;
-    //   const action = a.toggleForm();
-    //   dispatch(action)
-    // }
+    if (this.props.toggleForm) {
+      const { dispatch } = this.props;
+      const action = a.toggleForm();
+      dispatch(action)
+    }
   }
   render() {
     const auth = this.props.firebase.auth();
     let loginButton = null;
 
     if ((isLoaded(auth)) && (auth.currentUser !== null)) {
+      console.log("signed in");
       loginButton = <span onClick={this.doSignOut}>Sign Out</span>
 
     } else if ((isLoaded(auth)) && (auth.currentUser === null)) {
+      console.log("signed out");
       loginButton = <span><Link to="/signin">Sign in/Sign up</Link></span>
     }
     return (
@@ -44,7 +49,12 @@ class Header extends React.Component {
     )
   }
 }
+const mapStateToProps = state => {
+  return {
+    toggleForm: state.toggleForm
+  }
+}
 
-Header = connect()(Header)
+Header = connect(mapStateToProps)(Header)
 
 export default withFirestore(Header);

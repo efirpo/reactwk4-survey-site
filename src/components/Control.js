@@ -40,7 +40,7 @@ class Control extends React.Component {
     let addSurveyForm = null;
 
     if (this.props.selectedSurvey && (isLoaded(auth)) && (auth.currentUser !== null)) {
-      detailsPage = <SurveyDetail survey={this.props.selectedSurvey} onBackToListClick={this.handleBackToListClick} />
+      detailsPage = <SurveyDetail survey={this.props.selectedSurvey} onBackToListClick={this.handleBackToListClick} foundUser={this.props.foundUser} />
     } else if (this.props.selectedSurvey && (isLoaded(auth)) & auth.currentUser === null) {
       detailsPage = <h2>You must be signed in to take surveys.</h2>
     } else if (!this.props.selectedSurvey) {
@@ -70,7 +70,8 @@ class Control extends React.Component {
 const mapStateToProps = state => {
   return {
     selectedSurvey: state.selectedSurvey,
-    toggleForm: state.toggleForm
+    toggleForm: state.toggleForm,
+    foundUser: state.foundUser
   }
 }
 

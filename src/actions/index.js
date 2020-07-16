@@ -8,3 +8,7 @@ export const selectSurvey = (survey) => ({
 export const toggleForm = () => ({
   type: a.TOGGLE_FORM
 })
+
+export const foundUser = () => ({
+  type: a.FOUND_USER
+})
