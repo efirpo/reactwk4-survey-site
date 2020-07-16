@@ -14,8 +14,12 @@ function SurveyDetail(props) {
 
   let user;
   let auth;
+  let id = props.survey.id
+  // let userSurveyDeets = {
+  //   id
+  // }
   if (props.foundUser) {
-    auth = props.firebase.auth()
+    auth = firebase.auth()
     user = auth.currentUser
   }
   async function handleSurveySubmission(event) {
@@ -29,11 +33,22 @@ function SurveyDetail(props) {
         q3response: q3response,
         q4response: q4response,
         q5response: q5response
-      })).then(firestore.collection('users').doc(user.uid).collection('surveys').add({
-        surveyID: props.survey.id
       }))
-
+    // .then(firestore.collection('users').doc(user.uid).set({
+    //   "surveys": [...firestore.collection('users').doc(user.uid), props.survey.id]
+    // }))
     handleAveragesMath(numberOfResponses)
+    handleAddSurveyId(props.survey.id)
+  }
+
+  function handleAddSurveyId(survey) {
+    thisUser = firestore.collection('users').doc(user.uid).get().then(function (doc) {
+      storeUser = {
+        ...doc.data(), surveys: [...doc.data.surveys, survey]
+
+      }
+    })
+    let storeUser;
   }
 
   function handleAveragesMath(numberOfResponses) {
